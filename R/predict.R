@@ -31,3 +31,7 @@ fitEVD <- function(data, maxima, conditional = "NULL", ...){
   return(fit)
 }
 
+predict <- function(...){
+  
+}
+
