@@ -2,27 +2,21 @@
 \alias{criteria}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Generic criteria pollutant function
+Constructor for \code{criteria} object
 }
 \description{
-This function takes a data frame of criteria pollutant data and creates an object with the class "\code{criteria}" (or a list of objects) that can be used to summarize and analyze the data in reference to the U.S. EPA's National Ambient Air Quality Standards (http://www.epa.gov/air/criteria.html).
+This function creates an object with the class "\code{criteria}" that can be used to summarize the status of ambient air monitors in reference to the U.S. EPA's National Ambient Air Quality Standards (http://www.epa.gov/air/criteria.html).
 }
 \usage{
-criteria(data, parameter, monitor.id, ...)
+criteria(pollutant, state, county, monitor.id)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{data}{
-A data frame with a column labeled "date" with the text format "YYYYMMDD", or "YYYYMMDDHH" for hourly data. The data frame may instead be formatted by the \code{import} function from the \code{openair} package. If the columns for the pollutant values are labeled appropriately, then the \code{parameter} argument does not have to be given. The data frame must not contain extra columns beside "date" and criteria pollutant(s). 
-}
-  \item{parameter}{
-A character or vector giving the pollutant abbreviation ("co", "pb", "no2", "o3", "PM2.5", "PM10", "so2") or parameter code (see https://aqs.epa.gov/aqsweb/codes/data/Parameters-CRITERIA.html). The total number of columns in the data frame must equal the number of parameters in the character vector plus the "date" column.
+  \item{pollutant}{
+An abbreviation for a criteria pollutant ("co", "pb", "no2", "o3", "PM10", "PM2.5", or "so2" corresponding to carbon monoxide, lead, nitrogen dioxiode, ozone, particulate matter, fine particles, and sulfur dioxide, respectively).
 }
   \item{monitor.id}{
-%%     ~~Describe \code{conditional} here~~
-}
-  \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
+Identification numbers in text with the following format: "XX-XXX-XXXX-X". The numbers correspond to state, county, site and POC codes respectively (see the US EPA's AQS code descriptions: http://www.epa.gov/ttn/airs/airsaqs/manuals/codedescs.htm). 
 }
 }
 \details{

@@ -1,9 +1,10 @@
 Package: cRiteria
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Summarize air pollution monitor status in reference to the US EPA's NAAQS
+Version: 0.1
 Date: 2014-03-21
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Nathan Byers
+Maintainer: Nathan Byers <nbyers@idem.in.gov>
+Description: This packages provides a quick way to summarize an ambient air pollution monitor's status regarding the US EPA's National Ambient Air Quality Standards.
+License: GPL-3 
+Imports: methods, sp
