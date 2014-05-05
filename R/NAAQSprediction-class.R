@@ -32,9 +32,9 @@ fitEVD <- function(maxima, conditional = "NULL", ...){
 }
 
 
-# setClass("prediction",
-#          slots = c(evd.fit = "list", prediction = "data.frame"),
-#          contains = "criteria"
-# )
+setClass("prediction",
+         slots = c(evd.fit = "list", prediction = "data.frame"),
+         contains = "criteria"
+)
 
 
