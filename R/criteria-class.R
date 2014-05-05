@@ -11,7 +11,7 @@
 setClass("criteria",
          slots = c(monitor = "data.frame",
                    standard = "data.frame",
-                   design.value = "list"
+                   design.value = "data.frame"
          ))
 
 criteria <- function(pollutant, state, county, monitor.id){ #one pollutant, state, county; more than one monitor.id
@@ -66,13 +66,15 @@ criteria <- function(pollutant, state, county, monitor.id){ #one pollutant, stat
   # load design values
   load(paste0(package.folder, "\\pollutants\\", pollutant, ".Rdata"))
   
-  dv.df <- merged.site.df[, 1:3]; names(dv.df) <- c("state", "county.code", "site.id")
+  dv.df <- merged.site.df[, c("State_Code", "County_Code", "Site_ID")]
+  names(dv.df) <- c("state", "county.code", "site.id")
   dv.df <- merge(dv.df, design.value.df)
   remove(design.value.df)
   
-  new("criteria", monitor = merged.site.df, 
-      standard = standards[standards$Abbreviation == pollutant, ],
-      design.value = dv.df)
+  stnd <- standards[standards$Abbreviation == pollutant, ]
+  row.names(stnd) <- 1:dim(stnd)[1]
+  
+  new("criteria", monitor = merged.site.df, standard = stnd, design.value = dv.df)
 }
 
 setMethod("show",
@@ -82,5 +84,26 @@ setMethod("show",
             cat("about", dim(object@monitor)[1], object@standard$Pollutant, " monitors")
           }
 )
+
+# create an accessors for slots
+setGeneric("monitor", function(object, ...) standardGeneric("monitor"))
+setMethod("monitor", signature = "criteria", function(object) object@monitor)
+
+setGeneric("standard", function(object, ...) standardGeneric("standard"))
+setMethod("standard", signature = "criteria", function(object) object@standard)
+
+setGeneric("designValue", function(object, ...) standardGeneric("designValue"))
+setMethod("designValue", signature = "criteria", function(object) object@design.value)
+
+# create subsetting method
+setMethod("[", "criteria",
+          function(x, i, j = missing, drop = "missing"){
+            .monitor <- x@monitor[i, ]
+            dv.df <- .monitor[, c("State_Code", "County_Code", "Site_ID")]
+            names(dv.df) <- c("state", "county.code", "site.id")
+            .design.value <- merge(dv.df, x@design.value)
+            new("criteria", monitor = .monitor, standard = x@standard,
+                design.value = .design.value[order(.design.value$design.value.year), ])
+          })
 
 

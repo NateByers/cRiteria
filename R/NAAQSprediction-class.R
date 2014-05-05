@@ -1,10 +1,10 @@
 
-fitEVD <- function(data, maxima, conditional = "NULL", ...){
-  fit <- fevd(maxima, data = data, ...)
+fitEVD <- function(maxima, conditional = "NULL", ...){
+  fit <- fevd(maxima, ...)
   if(conditional != "NULL"){
-    fit.location <- fevd(maxima, data = data, location.fun = ~ conditional, ...)
+    fit.location <- fevd(maxima, location.fun = ~ conditional, ...)
     lrt.location <- lr.test(fit, fit.location)
-    fit.scale <- fevd(maxima, data = data, scale.fun = ~ contional, ...)
+    fit.scale <- fevd(maxima, scale.fun = ~ contional, ...)
     lrt.scale <- lr.test(fit, fit.scale)
     if(lrt.location$p.value > 0.05 & lrt.scale$p.value > 0.05){
       
@@ -13,7 +13,7 @@ fitEVD <- function(data, maxima, conditional = "NULL", ...){
     } else if(lrt.location$p.value > 0.05 & lrt.scale$p.value <= 0.05){
       fit <- fit.scale
     } else if(lrt.location$p.value <= 0.05 & lrt.scale$p.value <= 0.05){
-      fit.location.scale <- fevd(maxima, data = data, location.fun = ~ conditional,
+      fit.location.scale <- fevd(maxima, location.fun = ~ conditional,
                                  scale.fun = ~ conditional, ...)
       lrt.location.scale <- lr.test(fit, fit.location.scale)
       if(lrt.location.scale$p.value <= 0.05){
@@ -30,4 +30,11 @@ fitEVD <- function(data, maxima, conditional = "NULL", ...){
   }
   return(fit)
 }
+
+
+# setClass("prediction",
+#          slots = c(evd.fit = "list", prediction = "data.frame"),
+#          contains = "criteria"
+# )
+
 
